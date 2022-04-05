@@ -1,0 +1,33 @@
+*{
+  text-align: right;
+}
+body {
+  background-image: url(https://wallpaperboat.com/wp-content/uploads/2019/10/free-space-background-07.jpg);
+  background-size: cover;
+}
+h2, p {
+  color: #aa4139;
+  text-align: center;
+  /* border: 5px solid peru; */
+}
+p {
+  color: pink !important;
+}
+li {
+  color: aliceblue;
+  list-style: none;
+  display: inline-block;
+}
+.webtext {
+  border:3px dashed #aa4139;
+}
+#div1 >p  {
+  color: green;
+  background: rgba(0, 0, 255, 0.5)
+}
+#div2 {
+  background: rgba(0, 234, 0, 0.3)
+}
+img {
+  float: left;
+}

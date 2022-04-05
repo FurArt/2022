@@ -1,0 +1,75 @@
+h1{
+  text-align: center;
+}
+li{
+  display: inline;
+}
+.head, .hands, .bodyRobot, .leg{
+  background-color: aqua;
+}
+.head{
+  width: 300px;
+  height: 200px;
+  margin: auto;
+  border-radius: 150px 150px 0 0;
+}
+span{  
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  background-color: antiquewhite;
+  margin: 30% 0 0 14%;
+  padding: auto;
+}
+span:last-child{
+  margin: 0 0 0 40%;
+}
+.head:hover{
+  width:390px;
+  border-radius: 250px 250px 0 0;
+  animation-delay: 2s;
+}
+.head:hover span{
+  margin: 25% 0 0 14%;
+}
+.hands{
+  display: inline-block;
+  width: 30px;
+  height: 75px;
+  border-radius: 15px 15px;
+  margin: 0 15px 85px 15px ;
+}
+
+.bodyRobot{
+  width: 300px;
+  height: 150px;
+  margin:  10px auto;
+  display: inline-block;
+}
+.head+div{
+  width: auto;
+  margin: auto;
+  display: table;
+}
+.leg { 
+  display: inline-block;
+  margin: 0 15px 0 15px;
+  width: 30px;
+  height: 75px;
+  border-radius: 15px 15px;
+}
+.legs{
+  margin: -2em 0 0 0;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-content: stretch;
+  justify-content: center;
+}
+* {
+  transition: all 1s;
+}
+.leg:hover:first-child{
+  transform: rotate(15deg);
+}
