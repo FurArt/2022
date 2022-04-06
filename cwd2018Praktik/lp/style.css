@@ -1,0 +1,22 @@
+body, html{
+  height: 100%;
+  width: 100%;
+  font-family: 'Montserrat', sans-serif;
+  background: url(usage-hunting-atv.jpeg) no-repeat center fixed;
+  background-size: cover;
+}
+h1{
+  color: aliceblue;
+}
+.btn{
+  font-size: 1.5rem;
+  color: rgba(226, 226, 231, 0.9);
+  text-transform: uppercase;
+}
+.btn-xl{
+  padding: 1rem 2rem;
+  border-radius: 300px;
+}
+.buffer{
+  height: 10rem;
+}
