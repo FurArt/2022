@@ -1,3 +1,4 @@
+
 .rounded-circle{
   width: 75px;
   height: 75px;
@@ -15,10 +16,25 @@
   .h1, h1{
     font-size: 40px;
   }
+  .h2, h2{
+    font-size: 35px;
+  }
 }
 .section-container {
   padding: 20px 0;
 }
 .section-container-spacer {
   margin-bottom: 0px;
+}
+div.active ul.navbar-right{
+  display: flex;flex-flow: column;
+}
+h1, h2, h3, h4, h5, h6{
+  font-family: 'Merriweather', sans-serif;
+}
+.collapsed{
+  background-color: rgb(138 207 197 / 51%);
+  top: 2%;
+  right: 3%;
+  position: fixed;
 }
