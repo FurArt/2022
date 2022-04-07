@@ -1,0 +1,21 @@
+.rounded-circle{
+  width: 75px;
+  height: 75px;
+  border-radius: 100%;
+  margin: 2em 0 0 0;
+}
+.img-certificate{
+  width: 100%;
+  margin: 20px 0 0 0;
+}
+.img-ytp{
+  margin: 0 auto;
+}
+@media (max-width: 700px) { 
+  .h1, h1{
+    font-size: 40px;
+  }
+}
+.section-container {
+  padding: 20px 0;
+}
