@@ -19,3 +19,6 @@
 .section-container {
   padding: 20px 0;
 }
+.section-container-spacer {
+  margin-bottom: 0px;
+}
