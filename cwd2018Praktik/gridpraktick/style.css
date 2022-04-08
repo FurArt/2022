@@ -35,7 +35,7 @@ a{
 div{
   padding: 30%;
   margin: 2em;
-  background-color: background: rgb(2,0,36);
+  background-color: rgb(2,0,36);
   background: linear-gradient(90deg, 
   rgba(2,0,36,0.5990220048899755) 32%, rgba(135,26,13,0.5916870415647921) 89%);
 }
