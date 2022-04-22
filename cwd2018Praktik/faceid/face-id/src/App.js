@@ -55,18 +55,31 @@ const particlesOption = {
   }
 }
 
-function App() {
-  return (
-    <div className="App">
-    <ParticlesBg />
-     <Navigation />
-     <Logo />
-     <ImageContainer />
-     <FaceFinder /> 
-     {/* 
-     */}
-    </div>
-  );
+class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      input: '',
+    }
+  }
+
+  onIntputChange = (event) =>{
+    console.log(event);
+  }
+  render(){
+    return (
+      <div className="App">
+      <ParticlesBg />
+      <Navigation />
+      <Logo />
+      <ImageContainer onIntputChange={this.onIntputChange} />
+      <FaceFinder /> 
+      {/* 
+      */}
+      </div>
+    );
+
+  }
 }
 
 export default App;
