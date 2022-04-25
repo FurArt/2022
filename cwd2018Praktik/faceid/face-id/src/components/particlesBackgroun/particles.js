@@ -69,7 +69,7 @@ const ParticlesBg = () => {
               default: "bounce",
             },
             random: false,
-            speed: 2,
+            speed: 3,
             straight: false,
           },
           number: {
@@ -77,7 +77,7 @@ const ParticlesBg = () => {
               enable: true,
               area: 800,
             },
-            value: 150,
+            value: 75,
           },
           opacity: {
             value: 0.5,
