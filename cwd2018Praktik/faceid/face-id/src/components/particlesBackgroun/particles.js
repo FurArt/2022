@@ -3,7 +3,6 @@ import { loadFull } from "tsparticles";
 
 const ParticlesBg = () => {
   const particlesInit = async (main) => {
-    // console.log(main);
 
     // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
     // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
@@ -12,7 +11,6 @@ const ParticlesBg = () => {
   };
 
   const particlesLoaded = (container) => {
-    // console.log(container);
   };
   return (
     <Particles
@@ -25,7 +23,7 @@ const ParticlesBg = () => {
         //     value: "#0d47a1",
         //   },
         // },
-        fpsLimit: 120,
+        fpsLimit: 30,
         interactivity: {
           events: {
             onClick: {
@@ -40,7 +38,7 @@ const ParticlesBg = () => {
           },
           modes: {
             push: {
-              quantity: 4,
+              quantity: 2,
             },
             repulse: {
               distance: 200,

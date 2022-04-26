@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import './FaceFinder.css';
 
 function FaceFinder({imageUrl, box}) {
-  console.log('FaceFinder: ', box);
   return (
     <div className='FaceFinder centre'>
       <div className='absolute ma2'>

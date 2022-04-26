@@ -5,6 +5,10 @@ import Logo from "./components/logo/Logo";
 import ImageContainer from "./components/imagecontainer/ImageContainer";
 import FaceFinder from "./components/FaceFinder";
 import ParticlesBg from "./components/particlesBackgroun/particles";
+import SignIn from "./components/signin/SignIn.js";
+import Register from "./components/Register/Register.js";
+
+
 // 9a08a2fc18a340b8b5fca18e82be82d5 Api for 
 
 let myHeaders = new Headers({
@@ -16,10 +20,10 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      input: "",
       imageUrl: "",
       imageData: "",
       box: "",
+      route:"signin"
     };
   }
 
@@ -36,7 +40,6 @@ class App extends Component {
   };
 
   displayFacebox = (boxdata) => {
-    // console.log(  );
     this.setState({ box: Object.values(boxdata).join(" ") });
   };
 
@@ -48,8 +51,6 @@ class App extends Component {
   };
 
   onSubmit = (response) => {
-    // this.setState({imageUrl: this.state.input})
-
     // NOTE: MODEL_VERSION_ID is optional, you can also call prediction with the MODEL_ID only
     // https://api.clarifai.com/v2/models/{YOUR_MODEL_ID}/outputs
     // this will default to the latest version_id
@@ -81,24 +82,34 @@ class App extends Component {
       .then((response) => response.text())
       .then((result) => this.displayFacebox(this.calculateFaceDetect(result)))
       .catch((error) => console.log("error", error));
-    console.log(this.state.box);
   }; // onSumit end
 
-  // .regions[0].region_info.bounding_box
+  onRoutechange = (route) => {
+    this.setState({route: route})
+  }
+  // rout state - signin && register && home
 
   render() {
+    let {route, imageUrl, box} = this.state;
     return (
       <div className="App">
         <ParticlesBg />
-        <Navigation />
-        <Logo />
-        <ImageContainer
-          onIntputChange={this.onIntputChange}
-          onSubmit={this.onSubmit}
-        />
-        <FaceFinder box={this.state.box} imageUrl={this.state.imageUrl} />
-        {/*
-         */}
+        <Navigation onRoutechange ={this.onRoutechange} route={route} />
+        { route === 'home'
+          ? <div>
+              <Logo />
+              <ImageContainer
+                onIntputChange={this.onIntputChange}
+                onSubmit={this.onSubmit}
+              />
+              <FaceFinder box={box} imageUrl={imageUrl} />
+            </div>
+        : (
+            this.state.route === 'signin' 
+            ? <SignIn onRoutechange ={this.onRoutechange} />
+            : <Register onRoutechange ={this.onRoutechange} />
+          ) 
+        }
       </div>
     );
   }
@@ -107,12 +118,12 @@ class App extends Component {
 export default App;
 
 // import React, {Component} from 'react';
-// function FaceFinder() {
+// function SignIn() {
 //   return (
-//     <div className="FaceFinder">
+//     <div className="SignIn">
 //  <p>Hello!</p>
 //     </div>
 //   );
 // }
 
-// export default FaceFinder;
+// export default SignIn;
