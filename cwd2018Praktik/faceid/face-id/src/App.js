@@ -8,8 +8,7 @@ import ParticlesBg from "./components/particlesBackgroun/particles";
 import SignIn from "./components/signin/SignIn.js";
 import Register from "./components/Register/Register.js";
 
-
-// 9a08a2fc18a340b8b5fca18e82be82d5 Api for 
+// 9a08a2fc18a340b8b5fca18e82be82d5 Api for
 
 let myHeaders = new Headers({
   Authorization: "Key 9a08a2fc18a340b8b5fca18e82be82d5",
@@ -23,10 +22,10 @@ class App extends Component {
       imageUrl: "",
       imageData: "",
       box: "",
-      route:"signin"
+      route: "signin",
     };
   }
-
+  // its need for creat point in face
   calculateFaceDetect = (data) => {
     let calculatedata = JSON.parse(data, null, 2).outputs[0].data.regions[0]
       .region_info.bounding_box;
@@ -42,7 +41,7 @@ class App extends Component {
   displayFacebox = (boxdata) => {
     this.setState({ box: Object.values(boxdata).join(" ") });
   };
-
+  // it read what spell into input at home
   onIntputChange = (event) => {
     this.setState({
       imageUrl: event.target.value,
@@ -54,6 +53,7 @@ class App extends Component {
     // NOTE: MODEL_VERSION_ID is optional, you can also call prediction with the MODEL_ID only
     // https://api.clarifai.com/v2/models/{YOUR_MODEL_ID}/outputs
     // this will default to the latest version_id
+    //clarifai settings
     const serchImg = JSON.stringify({
       user_app_id: {
         user_id: "f9g2ig4csvok",
@@ -74,6 +74,7 @@ class App extends Component {
       headers: myHeaders,
       body: serchImg,
     };
+    //clarifai settings end
 
     fetch(
       "https://api.clarifai.com/v2/models/face-detection/versions/6dc7e46bc9124c5c8824be4822abe105/outputs",
@@ -82,48 +83,36 @@ class App extends Component {
       .then((response) => response.text())
       .then((result) => this.displayFacebox(this.calculateFaceDetect(result)))
       .catch((error) => console.log("error", error));
-  }; // onSumit end
+  };
 
   onRoutechange = (route) => {
-    this.setState({route: route})
-  }
+    this.setState({ route: route });
+  };
   // rout state - signin && register && home
 
   render() {
-    let {route, imageUrl, box} = this.state;
+    let { route, imageUrl, box } = this.state;
     return (
       <div className="App">
         <ParticlesBg />
-        <Navigation onRoutechange ={this.onRoutechange} route={route} />
-        { route === 'home'
-          ? <div>
-              <Logo />
-              <ImageContainer
-                onIntputChange={this.onIntputChange}
-                onSubmit={this.onSubmit}
-              />
-              <FaceFinder box={box} imageUrl={imageUrl} />
-            </div>
-        : (
-            this.state.route === 'signin' 
-            ? <SignIn onRoutechange ={this.onRoutechange} />
-            : <Register onRoutechange ={this.onRoutechange} />
-          ) 
-        }
+        <Navigation onRoutechange={this.onRoutechange} route={route} />
+        {route === "home" ? (
+          <div>
+            <Logo />
+            <ImageContainer
+              onIntputChange={this.onIntputChange}
+              onSubmit={this.onSubmit}
+            />
+            <FaceFinder box={box} imageUrl={imageUrl} />
+          </div>
+        ) : this.state.route === "signin" ? (
+          <SignIn onRoutechange={this.onRoutechange} />
+        ) : (
+          <Register onRoutechange={this.onRoutechange} />
+        )}
       </div>
     );
   }
 }
 
 export default App;
-
-// import React, {Component} from 'react';
-// function SignIn() {
-//   return (
-//     <div className="SignIn">
-//  <p>Hello!</p>
-//     </div>
-//   );
-// }
-
-// export default SignIn;
