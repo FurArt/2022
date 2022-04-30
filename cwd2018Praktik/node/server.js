@@ -1,11 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const myPlaintextPassword = 's0/\/\P4$$w0rD';
 const someOtherPlaintextPassword = 'not_bacon';
 const app = express();
-app.use( bodyParser.json())
+
+//block use
+app.use( bodyParser.json()) 
+app.use(cors())
 
 const database = {
   users:[
@@ -13,7 +17,7 @@ const database = {
       id: '123',
       name: 'Aid',
       email: 'aid@aid.com',
-      password: 'password',
+      password: 'Password',
       entries: 0,
       joined: new Date(),
     },
@@ -53,29 +57,21 @@ app.get('/', (req, res)=>{
 // signin:
 app.post('/signin',  (req, res)=>{
 
-  
-    // Load hash from your password DB.
-    bcrypt.compare(database.login.password, database.login.hash, function(err, result) {
-      console.log('guest1: ', err);
-      // result == true
-    });
-    bcrypt.compare(someOtherPlaintextPassword, hash, function(err, result) {
-      console.log('guest2: ', result);
-
-      // result == false
-    });
-
   if(req.body.email === database.users[0].email &&
     req.body.password === database.users[0].password
     ){
       res.json('signin ok!!')
+      console.log('signin ok!!',req.body.email, req.body.password);
     } else {
-      res.json('signin work but bad password or login name!!')
+      console.log('signin work but bad password or login name!!', req.body);
+
+      res.status(400).json(req.body)
     }
   })
   app.get('/signin', (req, res)=>{
     res.json("signin!!!!")
   }) 
+
 //register
 app.post('/register', (req, res)=>{
   const {email, name, password} = req.body

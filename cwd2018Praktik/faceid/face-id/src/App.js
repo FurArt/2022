@@ -25,7 +25,14 @@ class App extends Component {
       route: "signin",
     };
   }
-  // its need for creat point in face
+// for check work with server
+// componentDidMount(){
+//   fetch('http://localhost:3000/')
+//   .then(response => response.json())
+//   .then(console.log)
+//   .catch(console.log)
+// }
+// its need for creat point in face
   calculateFaceDetect = (data) => {
     let calculatedata = JSON.parse(data, null, 2).outputs[0].data.regions[0]
       .region_info.bounding_box;
