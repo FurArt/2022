@@ -5,6 +5,7 @@ import Logo from "./components/logo/Logo";
 import ImageContainer from "./components/imagecontainer/ImageContainer";
 import FaceFinder from "./components/FaceFinder";
 import ParticlesBg from "./components/particlesBackgroun/particles";
+import Rank from "./components/Rank.js";
 import SignIn from "./components/signin/SignIn.js";
 import Register from "./components/Register/Register.js";
 
@@ -23,16 +24,36 @@ class App extends Component {
       imageData: "",
       box: "",
       route: "signin",
+      user: {
+        id: 0,
+        name: "",
+        email: "",
+        password: "",
+        entries: 0,
+        joined: new Date(),
+      },
     };
   }
-// for check work with server
-// componentDidMount(){
-//   fetch('http://localhost:3000/')
-//   .then(response => response.json())
-//   .then(console.log)
-//   .catch(console.log)
-// }
-// its need for creat point in face
+
+  loadUsserData = (data) =>{
+    this.setState({user:{
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      entries: data.entries,
+      joined: data.entries,
+    }})
+    
+  }
+
+  // for check work with server
+  // componentDidMount(){
+  //   fetch('http://localhost:3000/')
+  //   .then(response => response.json())
+  //   .then(console.log)
+  //   .catch(console.log)
+  // }
+  // its need for creat point in face
   calculateFaceDetect = (data) => {
     let calculatedata = JSON.parse(data, null, 2).outputs[0].data.regions[0]
       .region_info.bounding_box;
@@ -57,6 +78,7 @@ class App extends Component {
   };
 
   onSubmit = (response) => {
+  console.log('loadUsserData: ', this.state.user );
     // NOTE: MODEL_VERSION_ID is optional, you can also call prediction with the MODEL_ID only
     // https://api.clarifai.com/v2/models/{YOUR_MODEL_ID}/outputs
     // this will default to the latest version_id
@@ -88,7 +110,28 @@ class App extends Component {
       requestOptions
     )
       .then((response) => response.text())
-      .then((result) => this.displayFacebox(this.calculateFaceDetect(result)))
+      .then((result) => {
+        if (result) {
+          console.log(JSON.stringify(this.state.user.id))
+          const messeg = {
+            method: "PUT",
+            headers: {
+              Accept: "*/*",
+              "Content-Type": "application/json",
+              "Accept-Encoding": "gzip, deflate, br",
+              Connection: "keep-alive",
+            },
+            Host: "127.0.0.1:3000",
+            body: JSON.stringify(this.state.user),
+          };
+          fetch("http://localhost:3000/image", messeg)
+          .then((response) => response.json())
+          .then((result) => {
+            this.setState(Object.assign(this.state.user, {entries:result}))
+          })
+        }
+        this.displayFacebox(this.calculateFaceDetect(result));
+      })
       .catch((error) => console.log("error", error));
   };
 
@@ -106,6 +149,7 @@ class App extends Component {
         {route === "home" ? (
           <div>
             <Logo />
+            <Rank name={this.state.user.name} entries={this.state.user.entries}/>
             <ImageContainer
               onIntputChange={this.onIntputChange}
               onSubmit={this.onSubmit}
@@ -113,9 +157,15 @@ class App extends Component {
             <FaceFinder box={box} imageUrl={imageUrl} />
           </div>
         ) : this.state.route === "signin" ? (
-          <SignIn onRoutechange={this.onRoutechange} />
+          <SignIn
+           onRoutechange={this.onRoutechange}
+           loadUsserData={this.loadUsserData}
+           />
         ) : (
-          <Register onRoutechange={this.onRoutechange} />
+          <Register 
+            onRoutechange={this.onRoutechange} 
+            loadUsserData={this.loadUsserData}
+          />
         )}
       </div>
     );

@@ -1,128 +1,143 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors')
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
-const myPlaintextPassword = 's0/\/\P4$$w0rD';
-const someOtherPlaintextPassword = 'not_bacon';
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const bcrypt = require("bcrypt");
+const knex = require("knex")({
+  client: "pg",
+  connection: {
+    host: "127.0.0.1",
+    port: 5432,
+    user: "postgres",
+    password: "580571",
+    database: "smartBraine",
+  },
+});
+
 const app = express();
-
 //block use
-app.use( bodyParser.json()) 
-app.use(cors())
+app.use(bodyParser.json());
+app.use(cors());
 
-const database = {
-  users:[
-    {
-      id: '123',
-      name: 'Aid',
-      email: 'aid@aid.com',
-      password: 'Password',
-      entries: 0,
-      joined: new Date(),
-    },
-    {
-      id: '124',
-      name: 'Sad',
-      email: 'sad@sad.com',
-      password: 'somepassword',
-      entries: 0,
-      joined: new Date(),
-    },
-  ],
-  login:[]
-}
+const foundIdUsers = (req, res) => {
+  const { id } = req.params;
+  knex
+    .select("*")
+    .from("users")
+    .where({
+      id: id,
+    })
+    .then((user) => {
+      if (user.length) {
+        res.json(user[0]);
+      } else {
+        res.status(400).json("User not found");
+      }
+    })
+    .catch((err) => {
+      res.status(400).json("Erro geting profile");
+      console.log(err);
+    });
+};
 
-
-
-const foundIdUsers = (req, res)=>{
-  const { id }=req.params;
-  let check = false;
-  database.users.forEach(user =>{
-    if (user.id === id){
-      check = true;
-      return res.json(user.name)
-    }
-  })
-  if(!check){
-    res.status(400).json('User dont found')
-  }
-}
-
-
-app.get('/', (req, res)=>{
-  res.send(database)
-})
+app.get("/", (req, res) => {
+  res.json("some info...");
+});
 
 // signin:
-app.post('/signin',  (req, res)=>{
+app.post("/signin", (req, res) => {
+  console.log(req.body);
 
-  if(req.body.email === database.users[0].email &&
-    req.body.password === database.users[0].password
-    ){
-      res.json('signin ok!!')
-      console.log('signin ok!!',req.body.email, req.body.password);
-    } else {
-      console.log('signin work but bad password or login name!!', req.body);
-
-      res.status(400).json(req.body)
-    }
-  })
-  app.get('/signin', (req, res)=>{
-    res.json("signin!!!!")
-  }) 
+  knex
+    .select("*")
+    .from("login")
+    .where("email", "=", req.body.email)
+    .then((data) => {
+      let passwordLoginTrue;
+      console.log(data.length);
+      if (data.length) {
+        passwordLoginTrue = bcrypt.compareSync(req.body.password, data[0].hash);
+      } else {
+        res.status(400).json(" Else Bad email");
+      }
+      if (passwordLoginTrue) {
+        knex
+          .select("*")
+          .from("users")
+          .where("email", "=", req.body.email)
+          .then((dataUser) => {
+            res.json(dataUser[0]);
+          })
+          .catch((err) => res.json("password ok but...", err));
+      } else {
+        res.status(400).json("signin work but bad password");
+      }
+    })
+    .catch((err) => {
+      res.json("Bad email");
+      console.log(err);
+    });
+});
 
 //register
-app.post('/register', (req, res)=>{
-  const {email, name, password} = req.body
-  bcrypt.genSalt(saltRounds, function(err, password) {
-    bcrypt.hash(myPlaintextPassword, password, function(err, hash) {
-      database.login.push(        {
-          id: '124',
-          password: password,
-          email: 'sad@sad.com',
-          hash: hash
+app.post("/register", (req, res) => {
+  // console.log(req.body);
+  const { email, name, password } = req.body;
+
+  const saltRounds = 10;
+  let hash = bcrypt.hashSync(password, saltRounds);
+
+  // returning("*") - send data back to server
+  knex
+    .transaction((trx) => {
+      trx
+        .insert({
+          hash: hash,
+          email: email,
         })
-      console.log(hash);
-        // Store hash in your password DB.
+        .into("login")
+        .returning("email")
+        .then((loginemail) => {
+          return trx("users")
+            .returning("*")
+            .insert({
+              email: email,
+              name: name,
+              joined: new Date(),
+            })
+            .then((response) => {
+              res.json(response[0]);
+            });
+        })
+        .then(trx.commit)
+        .catch(trx.rollback);
+    })
+    .catch((err) => {
+      res.json(err);
     });
-  });
-  database.users.push({
-    id: '125',
-    name: name ,
-    email: email ,
-    password: password,
-    entries: 0,
-    joined: new Date(),
-  })
-  res.json('register sucsess')
-})
 
-app.get('/profile/:id', (req, res)=>{
-  foundIdUsers(req, res)
-})
+  // database.users.push(pushObj);
+  // res.json(database.users[database.users.length - 1]);
 
-app.put('/image', (req,res)=>{
-  const { id }=req.body;
-  let check = false;
-  database.users.forEach(user =>{
-    if (user.id === id){
-      check = true;
-      user.entries++
-      return res.json(user.entries)
-    }
-  })
-  if(!check){
-    res.status(400).json('User dont found')
-  }
-})
+  // console.log(database.users);
+});
 
+app.get("/profile/:id", (req, res) => {
+  foundIdUsers(req, res);
+});
 
+app.put("/image", (req, res) => {
+  console.log(req.body);
+  const { id } = req.body;
+  knex("users")
+    .where("id", "=", id)
+    .increment("entries", 1)
+    .returning("entries")
+    .then((entries) => res.json(entries[0]))
+    .catch((err) => res.status(400).json("somgonewrong", err));
+});
 
-
-
-app.listen(3000,()=>{
-  console.log('server work at 3000');
+app.listen(3000, () => {
+  console.log("server work at 3000");
 });
 /*
 /chek list for work
@@ -132,5 +147,3 @@ app.listen(3000,()=>{
 /profile / :user ID - get -user
 /image -- put - user rank
 */
-
-

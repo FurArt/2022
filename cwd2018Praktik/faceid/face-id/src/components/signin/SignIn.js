@@ -34,7 +34,8 @@ class SignIn extends Component {
     fetch('http://localhost:3000/signin', messeg)
     .then((response)=>response.json())
     .then(data => {
-      if (data === "signin ok!!"){
+      if (data){
+        this.props.loadUsserData(data)
         this.props.onRoutechange('home')
       }
     })
