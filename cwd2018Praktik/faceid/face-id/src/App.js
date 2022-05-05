@@ -111,8 +111,8 @@ class App extends Component {
     )
       .then((response) => response.text())
       .then((result) => {
+        // console.log((result))
         if (result) {
-          console.log(JSON.stringify(this.state.user.id))
           const messeg = {
             method: "PUT",
             headers: {
@@ -127,7 +127,8 @@ class App extends Component {
           fetch("http://localhost:3000/image", messeg)
           .then((response) => response.json())
           .then((result) => {
-            this.setState(Object.assign(this.state.user, {entries:result}))
+            console.log()
+            this.setState(Object.assign(this.state.user, {entries:result.entries}))
           })
         }
         this.displayFacebox(this.calculateFaceDetect(result));

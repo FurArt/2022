@@ -45,7 +45,6 @@ app.get("/", (req, res) => {
 
 // signin:
 app.post("/signin", (req, res) => {
-  console.log(req.body);
 
   knex
     .select("*")
@@ -56,9 +55,7 @@ app.post("/signin", (req, res) => {
       console.log(data.length);
       if (data.length) {
         passwordLoginTrue = bcrypt.compareSync(req.body.password, data[0].hash);
-      } else {
-        res.status(400).json(" Else Bad email");
-      }
+      } 
       if (passwordLoginTrue) {
         knex
           .select("*")
@@ -68,10 +65,13 @@ app.post("/signin", (req, res) => {
             res.json(dataUser[0]);
           })
           .catch((err) => res.json("password ok but...", err));
+      } else if (data.length === 0 ){
+        res.status(400).json("signin work but please register!");
       } else {
         res.status(400).json("signin work but bad password");
-      }
-    })
+      } // end if
+//end then->
+    }) 
     .catch((err) => {
       res.json("Bad email");
       console.log(err);
