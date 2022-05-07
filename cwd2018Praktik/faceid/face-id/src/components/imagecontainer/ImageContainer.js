@@ -3,6 +3,7 @@ function ImageContainer({onIntputChange, onSubmit}) {
   return (
     <div className="ImageContainer">
         <p className='f3'>{'This Magic staff will detect face on image!'}</p>
+        <p className='f4'>{'Send url with foto with face'}</p>
      <div className='centre'>
       <div className='form pa4 shadow-5 br3'>
         <input type={'text'}  placeholde={'Give url you foto'} className='f3 pa2 w-70' onChange={onIntputChange}/>

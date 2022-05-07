@@ -124,11 +124,11 @@ class App extends Component {
             Host: "127.0.0.1:3000",
             body: JSON.stringify(this.state.user),
           };
-          fetch("http://localhost:3000/image", messeg)
+          fetch("http://localhost:5000/image", messeg)
           .then((response) => response.json())
           .then((result) => {
             console.log()
-            this.setState(Object.assign(this.state.user, {entries:result.entries}))
+            this.setState(Object.assign(this.state.user, {entries:result}))
           })
         }
         this.displayFacebox(this.calculateFaceDetect(result));
@@ -137,6 +137,23 @@ class App extends Component {
   };
 
   onRoutechange = (route) => {
+    if (route === "signin") {
+      console.log("clear!");
+      this.setState({
+        imageUrl: "",
+        imageData: "",
+        box: "",
+        route: "signin",
+        user: {
+          id: 0,
+          name: "",
+          email: "",
+          password: "",
+          entries: 0,
+          joined: new Date(),
+        },
+      })
+    }
     this.setState({ route: route });
   };
   // rout state - signin && register && home

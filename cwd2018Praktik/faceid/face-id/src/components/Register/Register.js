@@ -37,7 +37,7 @@ class Register extends Component {
       Host: "127.0.0.1:3000",
       body: JSON.stringify(data),
     };
-    fetch("http://localhost:3000/register", messeg)
+    fetch("http://localhost:5000/register", messeg)
       .then((response) => response.json())
       .then((data) => {
         if (data) {
