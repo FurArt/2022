@@ -6,8 +6,10 @@ import ImageContainer from "./components/imagecontainer/ImageContainer";
 import FaceFinder from "./components/FaceFinder";
 import ParticlesBg from "./components/particlesBackgroun/particles";
 import Rank from "./components/Rank.js";
-import SignIn from "./components/signin/SignIn.js";
-import Register from "./components/Register/Register.js";
+// import SignIn from "./components/signin/SignIn.js";
+// import Register from "./components/Register/Register.js";
+import HookForm from "./components/signin/hookForm";
+import HookFormRegister from "./components/Register/hookFormRegister"
 
 // 9a08a2fc18a340b8b5fca18e82be82d5 Api for
 
@@ -23,7 +25,7 @@ class App extends Component {
       imageUrl: "",
       imageData: "",
       box: "",
-      route: "signin",
+      route: "signout",
       user: {
         id: 0,
         name: "",
@@ -35,16 +37,18 @@ class App extends Component {
     };
   }
 
-  loadUsserData = (data) =>{
-    this.setState({user:{
-      id: data.id,
-      name: data.name,
-      email: data.email,
-      entries: data.entries,
-      joined: data.entries,
-    }})
-    
-  }
+  loadUsserData = (data) => {
+    console.log(data);
+    this.setState({
+      user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        entries: data.entries,
+        joined: data.entries,
+      },
+    });
+  };
 
   // for check work with server
   // componentDidMount(){
@@ -78,7 +82,7 @@ class App extends Component {
   };
 
   onSubmit = (response) => {
-  console.log('loadUsserData: ', this.state.user );
+    console.log("loadUsserData: ", this.state.user);
     // NOTE: MODEL_VERSION_ID is optional, you can also call prediction with the MODEL_ID only
     // https://api.clarifai.com/v2/models/{YOUR_MODEL_ID}/outputs
     // this will default to the latest version_id
@@ -125,11 +129,13 @@ class App extends Component {
             body: JSON.stringify(this.state.user),
           };
           fetch("http://localhost:5000/image", messeg)
-          .then((response) => response.json())
-          .then((result) => {
-            console.log()
-            this.setState(Object.assign(this.state.user, {entries:result}))
-          })
+            .then((response) => response.json())
+            .then((result) => {
+              console.log();
+              this.setState(
+                Object.assign(this.state.user, { entries: result })
+              );
+            });
         }
         this.displayFacebox(this.calculateFaceDetect(result));
       })
@@ -137,6 +143,7 @@ class App extends Component {
   };
 
   onRoutechange = (route) => {
+    console.log(route);
     if (route === "signin") {
       console.log("clear!");
       this.setState({
@@ -152,7 +159,7 @@ class App extends Component {
           entries: 0,
           joined: new Date(),
         },
-      })
+      });
     }
     this.setState({ route: route });
   };
@@ -164,24 +171,27 @@ class App extends Component {
       <div className="App">
         <ParticlesBg />
         <Navigation onRoutechange={this.onRoutechange} route={route} />
-        {route === "home" ? (
+        {route === "Sign in" ? (
           <div>
             <Logo />
-            <Rank name={this.state.user.name} entries={this.state.user.entries}/>
+            <Rank
+              name={this.state.user.name}
+              entries={this.state.user.entries}
+            />
             <ImageContainer
               onIntputChange={this.onIntputChange}
               onSubmit={this.onSubmit}
             />
             <FaceFinder box={box} imageUrl={imageUrl} />
           </div>
-        ) : this.state.route === "signin" ? (
-          <SignIn
-           onRoutechange={this.onRoutechange}
-           loadUsserData={this.loadUsserData}
-           />
+        ) : this.state.route === "signout" ? (
+          <HookForm
+            onRoutechange={this.onRoutechange}
+            loadUsserData={this.loadUsserData}
+          />
         ) : (
-          <Register 
-            onRoutechange={this.onRoutechange} 
+          <HookFormRegister
+            onRoutechange={this.onRoutechange}
             loadUsserData={this.loadUsserData}
           />
         )}
@@ -191,3 +201,5 @@ class App extends Component {
 }
 
 export default App;
+
+// https://enigmatic-gorge-99018.herokuapp.com/image
