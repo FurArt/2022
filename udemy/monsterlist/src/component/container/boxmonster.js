@@ -1,13 +1,12 @@
 import { Component } from "react";
 import "./boxmonster.css"
-class BoxMonster extends Component {
-  render() {
-    console.log("BoxMonster", this.props.children);
+
+
+const BoxMonster = (props) => {
     return (
       <div className="card-list">
-       {this.props.children}
+       {props.children}
       </div>
     );
-  }
 }
 export default BoxMonster;

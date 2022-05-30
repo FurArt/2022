@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import './card.css'
 
-class Cardlist extends Component {
-render(){
+const Cardlist = (props) => {
   return (
-    this.props.user.map((ell) => {
+    props.user.map((ell) => {
       const { id, name, email } = ell;
       return (
         <div className="card-container" key={id}>
@@ -19,5 +18,5 @@ render(){
     })
   )
 }
-}
+
 export default Cardlist
