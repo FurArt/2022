@@ -9,6 +9,8 @@ const App = () => {
   const [fetchField, setfetchField] = useState([]);
   const [filterField, setfilterField] = useState(fetchField);
   const [searchField, setsearchField] = useState(""); //[value, setState]
+  const [title, settitle] = useState("Monster"); //[value, setState]
+
 
 
   useEffect(() => {
@@ -31,6 +33,10 @@ const App = () => {
     let inputValue = event.target.value.toLowerCase();
     setsearchField(inputValue);
   }
+  function titleOn(event) {
+    let inputValue = event.target.value.toLowerCase();
+    settitle(inputValue);
+  }
 
   
 
@@ -39,11 +45,17 @@ const App = () => {
 
   return (
     <div>
-      <h1 className="app-title">Monster Rolodex</h1>
+      <h1 className="app-title">{title}</h1>
       <SearchBox
         className="SearchBox-input"
         searchHandler={searchOn}
         placeholder="Search monster"
+      />
+      <br/>
+      <SearchBox
+        className="title-input"
+        searchHandler={titleOn}
+        placeholder="Set monster title"
       />
       <BoxMonster>
         <Cardlist user={filterField} />

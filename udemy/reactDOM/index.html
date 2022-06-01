@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="root">React is not render </div>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script>
+
+    const Person = (props) => {
+      return React.createElement('div',
+        { 'key': 1 },
+        [
+          React.createElement('h2',
+            { 'className': 'title', 'key': 2 },
+            props.name),
+          React.createElement('p',
+            { 'className': 'title-occupation', 'key': 3 },
+            props.occupation),
+        ])
+      console.log(i);
+    }
+    const App = () => {
+      return React.createElement('div',
+        {},
+        [
+          // React.createElement('h1', 
+          // { 'className': 'title', 'key': i++ }, 
+          // 'React is render'),
+          React.createElement(Person, { name: 'ART', occupation: 'Study!', key: 4 }),
+          React.createElement(Person, { name: 'ART2', occupation: 'Study!', key: 5 }),
+          React.createElement(Person, { name: 'ART3', occupation: 'Study!', key: 6 })
+        ])
+    };
+
+    ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App))
+
+  </script>
+</body>
+
+</html>
+<!-- 
+const conteiner = document.getElementById("root");
+const root = createRoot(conteiner);
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+); -->
